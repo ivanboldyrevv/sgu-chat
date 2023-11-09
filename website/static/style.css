@@ -1,0 +1,15 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Caveat', cursive;
+
+    .custom-margin {
+        top-margin: -10px;
+    }
+
+    .bg-custom {
+      background-color: #99CCFF; /* Replace with your desired color */
+    }
+}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% block title %}Регистрация{% endblock %}
+{% block content %}
+<form method="POST">
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+    </div>
+    <div class="col">
+      <div class="card my-3" style="width:38rem;">
+        <div class="card-body">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="username" name="username" placeholder="name">
+              <label for="username">Введите свое имя</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+              <label for="email">Введите эл.почту</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              <label for="Password">Введите пароль</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" class="form-control" id="check-password" name="check-password" placeholder="Password">
+              <label for="check-password">Потвердите пароль</label>
+            </div>
+            <button class="btn btn-light btn-lg">Ввод</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+</div>
+</form>
+{% endblock %}
