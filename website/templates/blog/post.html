@@ -1,0 +1,91 @@
+{% extends "base.html" %}{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<!-- post card -->
+<div class="card my-3" style="width:34rem;">
+    <div class="card-body">
+        <!--- user_img, username, date -->
+        <div class="row">
+            <div class="col-1 text-start">
+                <img width="28" height="28" class="circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiZiUElp6b1wqWnRUg7U67yOMTfd8urhziuLuAk-&s" alt="ninja-turtle"/>
+            </div>
+            <div class="col-auto text-start">
+                <p class="fw-bold usr-post-margin">{{post.username}}</p>
+            </div>
+            <div class="col text-start">
+                <p class="date-margin">- {{post.created}}</p>
+            </div>
+        </div>
+        <!--- post data -->
+        <div class="col text-start">
+            <a class="aa" href="{{ url_for('post.post_page', post_id=post.id) }}"><h3>{{ post.title }}</h3></a>
+        </div>
+        <div class="col text-start">
+            <p>{{post.data}}</p>
+        </div>
+        <div class="col text-center">
+            <div id="carousel{{post.id}}" class="carousel slide carousel-fade" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for filename in post.filenames.split(',') %}
+                {% if loop.index == 1 %}
+                <div class="carousel-item active">
+                  <img src="{{ url_for('static', filename='post_files/' + filename)}}" class="d-block w-100" alt="...">
+                </div>
+                {% else %}
+                <div class="carousel-item">
+                  <img src="{{ url_for('static', filename='post_files/' + filename)}}" class="d-block w-100" alt="...">
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{post.id}}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carousel{{post.id}}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-start my-1">
+                Просмотры: 10000 просмотров
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1 text-start">
+                <button style="background: none; border: none; padding: 0;">
+                    <img width="25" height="25" src="{{url_for('static', filename='img/heart.png')}}" alt="hearts"/>
+                </button>
+            </div>
+            <div class="col-1 text-start">
+                <button style="background: none; border: none; padding: 0;">
+                    <img width="25" height="25" src="{{url_for('static', filename='img/comment.png')}}" alt="speech-bubble"/>
+                </button>
+            </div>
+            <div class="col-1 text-start">
+                <button style="background: none; border: none; padding: 0;">
+                    <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-add.png')}}" alt="bookmark"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- comment block -->
+<div class="card my-3" style="width:34rem;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-1 text-start">
+                <img class="circle" src="https://rg.ru/uploads/images/206/16/91/NIK_0544.jpg" width="28" height="28">
+            </div>
+            <div class="col text-start">
+                <p class="usr-comment-margin fw-bold">username</p>
+                <p class="post-comment-margin">11.11.23</p>
+            </div>
+        </div>
+        <div class="col text-start">
+            <p class="data-comment">data comment</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

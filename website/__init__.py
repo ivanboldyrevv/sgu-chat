@@ -24,6 +24,12 @@ def create_app(test_config=None):
     db.init_app(app)
 
     from . import auth
+    from .views import home
+    from .views import post
+    from .views import profile
     app.register_blueprint(auth.auth)
+    app.register_blueprint(home.home)
+    app.register_blueprint(post.post)
+    app.register_blueprint(profile.profile)
 
     return app

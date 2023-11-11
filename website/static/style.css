@@ -1,15 +1,67 @@
 html {
-    font-size: 16px;
+  font-size: 16px;
+  background-color: #00000;
 }
 
 body {
-    font-family: 'Caveat', cursive;
+  font-family: 'Caveat', cursive;
+}
 
-    .custom-margin {
-        top-margin: -10px;
-    }
+.custom-margin {
+  margin-top: -10px;
+}
 
-    .bg-custom {
-      background-color: #99CCFF; /* Replace with your desired color */
-    }
+.bg-custom {
+  background-color: #99CCFF; /* Replace with your desired color */
+}
+
+.circle {
+  width: 30px; /* Adjust the size as needed */
+  height: 30px; /* Adjust the size as needed */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.date-margin {
+  margin-left: -15px;
+}
+
+.usr-post-margin {
+  margin-left: -10px;
+}
+
+.usr-comment-margin {
+  margin-left: -10px;
+  margin-top: -7px;
+}
+.post-comment-margin {
+  margin-left: -10px;
+  margin-top: -22px;
+}
+
+.data-comment {
+  margin-top: -15px;
+}
+
+.aa {
+  text-decoration: none;
+  color: #000000;
+}
+
+.aa:hover {
+  color: #000000; /* or any other dark color code */
+}
+
+.margin-profile {
+  margin-left: 1110px;
+}
+
+
+.s-margin {
+  margin-top: -14px;
+  margin-left: -4px;
+}
+
+.edit-margin{
+  margin-left: 100px;
 }

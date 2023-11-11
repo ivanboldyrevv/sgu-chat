@@ -4,7 +4,8 @@
     <!-- meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!-- img -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <!-- Bootstrap CSS -->
@@ -19,21 +20,82 @@
   <body>
     <nav class="navbar bg-custom">
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <span class="material-symbols-outlined">
-          home
-          </span>
+        <div class="col">
+          <a class="navbar-brand" href="{{url_for('home.home_page')}}">
+            <img src="{{ url_for('static', filename='img/sgu-chat-label.png') }}">
+          </a>
+        </div>
+        {% if g.user %}
+        <a class="navbar-brand" href="{{url_for('profile.profile_page', username=g.user['username'])}}">
+          <img src="{{url_for('static', filename='img/user.png')}}">
         </a>
+        <a class="navbar-brand" href="{{url_for('auth.logout')}}">
+          <img src="{{url_for('static', filename='img/logout.png')}}">
+        </a>
+        {% else %}
         <a class="navbar-brand" href="{{url_for('auth.login')}}">
-          <span class="material-symbols-outlined">
-          login
-          </span>
+          <img src="{{url_for('static', filename='img/login.png')}}">
         </a>
+        {% endif %}
       </div>
     </nav>
-    {% block content %}{% endblock %}
+    <div class="container">
+      <div class="row">
+        <div class="col text-start my-3">
+          {% if g.user %}
+          <div class="col">
+            <button class="btn btn-light">Закладки</button>
+          </div>
+          <div class="col my-1">
+            <button class="btn btn-light">Чат</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#new-post">Новый пост</button>
+          </div>
+        {% endif %}
+        </div>
+        <div class="col text-center">
+          {% block content %}{% endblock %}
+        </div>
+        <div class="col text-end my-3">
+          сейчас обсуждают
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>
+
+<!-- new post modal -->
+<form method="POST" enctype=multipart/form-data>
+<div class="modal fade" id="new-post" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Новый пост</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="title" class="form-label">Заголовок вашего поста</label>
+          <textarea class="form-control" id="title" name="title" rows="1"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="data" class="form-label">Основной текст вашего поста</label>
+          <textarea class="form-control" id="data" name="data" rows="6"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="files" class="form-label">Добавьте к вашему посту картинку или видео</label>
+          <input class="form-control" type="file" id="files" name="files" multiple>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-dark" name="new-post">Опубликовать</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>

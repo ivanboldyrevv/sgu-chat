@@ -1,11 +1,20 @@
+/*
 DROP TABLE user;
 DROP TABLE post;
+DROP TABLE files_post;
+*/
 
 CREATE TABLE IF NOT EXISTS user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(32) UNIQUE NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    avatar TEXT NULL,
+    country TEXT NULL,
+    birthday TEXT NULL,
+    gender TEXT NULL,
+    bio TEXT NULL,
+    study TEXT NULL
 );
 
 CREATE TABLE IF NOT EXISTS post(
@@ -15,4 +24,13 @@ CREATE TABLE IF NOT EXISTS post(
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     author_id INTEGER NOT NULL,
     FOREIGN KEY(author_id) REFERENCES user(id)
+);
+
+CREATE TABLE IF NOT EXISTS files_post(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    filetype TEXT NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    post_id INTEGER NOT NULL,
+    FOREIGN KEY(post_id) REFERENCES post(id)
 );

@@ -61,7 +61,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('home.home_page'))
 
         flash(error)
 
@@ -78,6 +78,7 @@ def load_logged_in_user():
         g.user = get_db().execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
 
 
+@auth.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('auth.login'))
