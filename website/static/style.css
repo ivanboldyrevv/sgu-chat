@@ -21,6 +21,12 @@ body {
   border-radius: 50%;
   overflow: hidden;
 }
+.prf-circle {
+  width: 60px; /* Adjust the size as needed */
+  height: 60px; /* Adjust the size as needed */
+  border-radius: 50%;
+  overflow: hidden;
+}
 
 .date-margin {
   margin-left: -15px;

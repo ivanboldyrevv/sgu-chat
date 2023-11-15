@@ -27,9 +27,15 @@ def create_app(test_config=None):
     from .views import home
     from .views import post
     from .views import profile
+    from .views import bookmarks
+    from .views import friendlist
+    from .views import chat
     app.register_blueprint(auth.auth)
     app.register_blueprint(home.home)
     app.register_blueprint(post.post)
     app.register_blueprint(profile.profile)
+    app.register_blueprint(bookmarks.bookmark)
+    app.register_blueprint(friendlist.friends)
+    app.register_blueprint(chat.chat)
 
     return app

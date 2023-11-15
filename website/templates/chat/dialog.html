@@ -1,0 +1,49 @@
+{% extends "base.html" %}{% block title %}диалог{% endblock %}
+{% block content %}
+<form method="POST">
+<div class="card my-3" style="width:36rem;">
+    <div class="card-body">
+        {% for message in messages %}
+        <div class="row">
+            {% if message.recipient_id != g.user.id %}
+            <div class="col text-start">
+                <div class="row my-1">
+                    <div class="col-1">
+                        <img class="circle" src="{{ url_for('static', filename='users_files/' + message.avatar) }}">
+                    </div>
+                    <div class="col">
+                        {{message.username}}
+                    </div>
+                </div>
+                <div class="col">
+                    {{message.data}}
+                </div>
+            </div>
+            {% else %}
+            <div class="col">
+                <div class="row">
+                    <div class="col text-end">
+                        {{message.username}}
+                    </div>
+                    <div class="col-1 text-start">
+                        <img class="circle" src="{{ url_for('static', filename='users_files/' + message.avatar) }}">
+                    </div>
+                </div>
+                <div class="col text-end">
+                    {{message.data}}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <hr/>
+        <div class="mb-3">
+          <textarea class="form-control" name="message-data" rows="2"></textarea>
+        </div>
+        <div class="col text-end">
+            <button type="submit" class="btn btn-light" name="send-message">Отправить</button>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock %}

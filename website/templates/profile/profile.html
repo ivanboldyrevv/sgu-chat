@@ -1,9 +1,11 @@
 {% extends "base.html" %}{% block title %}Profile{% endblock %}
 {% block content %}
+<form method="POST" enctype="multipart/form-data">
 <!-- profile card -->
 <div class="card my-3" style="width:58rem;">
     <div class="card-body">
         <div class="row">
+            <!-- столбец с данными о пользователе -->
             <div class="col-4 text-start">
                 {% if profile.avatar %}
                 <img src="{{ url_for('static', filename='users_files/' + profile.avatar) }}" class="rounded" width="250">
@@ -23,18 +25,39 @@
                         <p class="s-margin"><img src="{{ url_for('static', filename='img/mail.png') }}"> {{ profile.email }}</p>
                     </div>
                 </div>
+                <div class="card my-1" style="height:2rem; width:8rem;">
+                    <div class="card-body">
+                        <p class="s-margin"><img src="{{ url_for('static', filename='img/friends.png') }}"> <a class="aa" href="{{ url_for('friends.friendlist', id=profile.id) }}">Друзья</a></p>
+                    </div>
+                </div>
             </div>
+            <!--- данные о пользователе и посты, которые он создал -->
             <div class="col text-start">
                 <div class="row">
                     <div class="col-auto">
                         <h3>{{ profile.username }}</h3>
                     </div>
+                    {% if g.user.username == profile.username %}
                     <div class="col text-end">
                         <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#settings"><img src="{{ url_for('static', filename='img/pencil.png') }}"> Редактировать профиль</button>
                     </div>
+                    {% else %}
+                    <div class="col text-end">
+                        {% if check_request %}
+                        <div class="col">
+                            <button type="submit" class="btn btn-light" name="recall-request" value="{{ profile.id }}"><img src="{{ url_for('static', filename='img/friends.png') }}"> Отозвать заявку</button>
+                        </div>
+                        {% else %}
+                        <div class="col">
+                            <button type="submit" class="btn btn-light" name="call-request" value="{{ profile.id }}"><img src="{{ url_for('static', filename='img/friends.png') }}"> Добавить в друзья</button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% endif %}
 
                 </div>
-                <h6>Изучаю: Программирование</h6>
+                <h6>Изучаю: Программирование &#U+1F1FA;</h6>
                 <h6>О себе:</h6>
                 <p>ЛЯГУШЕЧКА ПЕПА</p>
                 <div style="display: flex; align-items: center;">
@@ -48,7 +71,7 @@
                         <a class="aa" href="{{ url_for('post.post_page', post_id=post.id) }}"><p class="fw-bold"><img src="{{ url_for('static', filename='img/picture.png') }}"> {{post.title}}</p></a>
                     </div>
                     <div class="col my-2 text-end">
-                        <p>{{post.created}}</p>
+                        <p>{{post.created.strftime('%D')}}</p>
                     </div>
                 </div>
                 <div class="col">
@@ -59,7 +82,6 @@
         </div>
     </div>
 </div>
-<form method="POST" enctype="multipart/form-data">
 <!-- settings block -->
 <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">

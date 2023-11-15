@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
-from website.auth import login_required
-from website.helpers.render_posts import post_to_db, files_to_db, get_posts
+from website.repo.repository import RepositoryFactory
+from website.repo.actions import post_actions
 
 home = Blueprint('home', __name__)
 IMAGE_EXTENSIONS = {'png', 'jpeg', 'jpg'}
@@ -12,6 +12,15 @@ UPLOAD_PATH = 'website/static/post_files'
 
 @home.route('/', methods=['GET', 'POST'])
 def home_page():
+    # репозитории бд
+    repository = RepositoryFactory()
+    post_repo = repository.create_post_repository()
+    bookmark_repo = repository.create_bookmark_repository()
+    like_repo = repository.create_likes_repository()
+
+    # id пользователя в сессии
+    user_id = session.get('user_id')
+
     if request.method == 'POST':
         # После заполнения полей модального окна записывает данные в БД
         if 'new-post' in request.form:
@@ -19,7 +28,7 @@ def home_page():
             data = request.form['data']
             author = session.get('user_id')
             files = request.files.getlist('files')
-            post_to_db(title, data, author)
+            post_repo.post_to_db(title, data, author)
             for file in files:
                 filetype = file.filename.rsplit('.')[1]
                 filename = secure_filename(file.filename)
@@ -28,9 +37,18 @@ def home_page():
                 if filetype in VIDEO_EXTENSIONS:
                     filetype = 'video'
                 file.save(os.path.join(UPLOAD_PATH, filename))
-                files_to_db(filename, filetype)
+                post_repo.files_to_db(filename, filetype)
+        # открытие комментов
+        post_actions(bookmark_repo, like_repo, user_id)
 
     # рендер постов
-    posts = get_posts()
+    posts = post_repo.get_posts()
 
-    return render_template('blog/home.html', posts=posts)
+    # статус кнопок
+    bookmark_status = {}
+    likes_status = {}
+    for post in posts:
+        bookmark_status[post['id']] = bookmark_repo.check_bookmark(user_id, post['id'])
+        likes_status[post['id']] = like_repo.check_like(post['id'], user_id)
+
+    return render_template('blog/home.html', posts=posts, bookmark_status=bookmark_status, likes_status=likes_status)

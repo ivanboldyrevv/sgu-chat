@@ -9,7 +9,7 @@
                 <img width="28" height="28" class="circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiZiUElp6b1wqWnRUg7U67yOMTfd8urhziuLuAk-&s" alt="ninja-turtle"/>
             </div>
             <div class="col-auto text-start">
-                <p class="fw-bold usr-post-margin">{{post.username}}</p>
+                <a class="aa" href="{{ url_for('profile.profile_page', username=post.username, id=post.user_id) }}"><p class="fw-bold usr-post-margin">{{post.username}}</p></a>
             </div>
             <div class="col text-start">
                 <p class="date-margin">- {{post.created}}</p>
@@ -52,23 +52,33 @@
                 Просмотры: 10000 просмотров
             </div>
         </div>
+        <form method="POST">
         <div class="row">
             <div class="col-1 text-start">
-                <button style="background: none; border: none; padding: 0;">
+                <button type="submit" style="background: none; border: none; padding: 0;" name="like" value="{{post.id}}">
+                    {% if likes_status.get(post.id) %}
+                    <img width="25" height="25" src="{{url_for('static', filename='img/fill-heart.png')}}" alt="hearts"/>
+                    {% else %}
                     <img width="25" height="25" src="{{url_for('static', filename='img/heart.png')}}" alt="hearts"/>
+                    {% endif %}
                 </button>
             </div>
             <div class="col-1 text-start">
-                <button style="background: none; border: none; padding: 0;">
+                <button type="submit" style="background: none; border: none; padding: 0;" name="open-comments" value="{{post.id}}">
                     <img width="25" height="25" src="{{url_for('static', filename='img/comment.png')}}" alt="speech-bubble"/>
                 </button>
             </div>
             <div class="col-1 text-start">
-                <button style="background: none; border: none; padding: 0;">
-                    <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-add.png')}}" alt="bookmark"/>
-                </button>
+                <button style="background: none; border: none; padding: 0;" name="bookmark" value="{{post.id}}">
+                {% if bookmark_status.get(post.id) %}
+                    <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-remove.png')}}" alt="bookmark">
+                {% else %}
+                    <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-add.png')}}" alt="bookmark">
+                {% endif %}
+            </button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 {% endfor %}

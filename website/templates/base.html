@@ -39,15 +39,30 @@
         {% endif %}
       </div>
     </nav>
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                  {% if category == 'message' %}
+                    <div class="alert alert-warning" role="alert">
+                  {% else %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                  {% endif %}
+                    {{ message }}
+                  </div>
+              {% endfor %}
+            {% endif %}
+        {% endwith %}
+      </div>
     <div class="container">
       <div class="row">
         <div class="col text-start my-3">
           {% if g.user %}
           <div class="col">
-            <button class="btn btn-light">Закладки</button>
+            <button class="btn btn-light"><a class="aa" href="{{ url_for('bookmarks.bookmarks') }}">Закладки</a></button>
           </div>
           <div class="col my-1">
-            <button class="btn btn-light">Чат</button>
+            <button class="btn btn-light"><a class="aa" href="{{ url_for('chat.chats') }}">Чат</a></button>
           </div>
           <div class="col">
             <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#new-post">Новый пост</button>
