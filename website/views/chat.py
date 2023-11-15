@@ -1,3 +1,4 @@
+"""Страница чата"""
 from flask import Blueprint, render_template, session, request
 from website.repo.repository import RepositoryFactory
 from website.repo.actions import chat_actions
