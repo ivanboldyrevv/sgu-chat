@@ -38,11 +38,11 @@
                     <img class="prf-circle" src="{{ url_for('static', filename='users_files/' + friend.avatar) }}">
             </div>
             <div class="col text-start">
-                {{friend.username}}
+                <a class="aa" href="{{ url_for('profile.profile_page', username=friend.username, id=friend.id) }}">{{friend.username}}</a>
                 <div class="col">
                     <div class="row">
                         <div class="col-3">
-                            <button class="btn btn-sm btn-light">Написать</button>
+                            <button class="btn btn-sm btn-light" name="to-chat">Написать</button>
                         </div>
                         <div class="col-6">
                             <button class="btn btn-sm btn-light">Удалить из друзей</button>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session
+from flask import Blueprint, render_template, request, redirect, url_for
 from website.repo.repository import RepositoryFactory
 
 friends = Blueprint('friends', __name__)
@@ -12,6 +12,8 @@ def friendlist():
     if request.method == 'POST':
         if 'accept-friend' in request.form:
             friends_data.update_status('friendship', request.form['accept-friend'], arg)
+        if 'to-chat' in request.form:
+            return redirect(url_for('chat.chats'))
 
     friend_request = friends_data.check_request('get', arg)
 

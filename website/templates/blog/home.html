@@ -1,6 +1,7 @@
 {% extends "base.html" %}{% block title %}Главная{% endblock %}
 {% block content %}
 {% for post in posts %}
+<form method="POST">
 <div class="card my-3" style="width:34rem;">
     <div class="card-body">
         <!--- user_img, username, date -->
@@ -13,6 +14,13 @@
             </div>
             <div class="col text-start">
                 <p class="date-margin">- {{post.created}}</p>
+            </div>
+            <div class="col text-end">
+                {% if sub_status.get(post.id) %}
+                    <button type="submit" class="btn btn-sm btn-light" name="unsubscribe" value="{{ post.author_id }}"><img src="{{ url_for('static', filename='img/bell.png') }}">Отписаться</button>
+                {% else %}
+                    <button type="submit" class="btn btn-sm btn-light" name="subscribe" value="{{ post.author_id }}"><img src="{{ url_for('static', filename='img/bell.png') }}">Подписаться</button>
+                {% endif %}
             </div>
         </div>
         <!--- post data -->
@@ -52,7 +60,6 @@
                 Просмотры: 10000 просмотров
             </div>
         </div>
-        <form method="POST">
         <div class="row">
             <div class="col-1 text-start">
                 <button type="submit" style="background: none; border: none; padding: 0;" name="like" value="{{post.id}}">
@@ -78,8 +85,8 @@
             </button>
             </div>
         </div>
-        </form>
     </div>
 </div>
+</form>
 {% endfor %}
 {% endblock %}

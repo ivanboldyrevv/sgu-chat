@@ -62,6 +62,18 @@ class PostRepository:
                                'JOIN files_post ON post.id = files_post.post_id '
                                'WHERE post.id = ?', (post_id,)).fetchone()
 
+    def subscribe(self, user_id, subscription):
+        self.db.execute('INSERT INTO subscribers (user_id, subscription) VALUES (?, ?)', (user_id, subscription))
+        self.db.commit()
+
+    def unsubscribe(self, user_id, subscription):
+        self.db.execute('DELETE FROM subscribers WHERE user_id = ? AND subscription = ?', (user_id, subscription))
+        self.db.commit()
+
+    def check_sub(self, user_id, subscription):
+        return True if self.db.execute('SELECT * FROM subscribers WHERE user_id = ? AND subscription = ?',
+                                       (user_id, subscription)).fetchone() is not None else False
+
 
 class CommentsRepository:
     def __init__(self, db):

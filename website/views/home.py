@@ -38,8 +38,8 @@ def home_page():
                     filetype = 'video'
                 file.save(os.path.join(UPLOAD_PATH, filename))
                 post_repo.files_to_db(filename, filetype)
-        # открытие комментов
-        post_actions(bookmark_repo, like_repo, user_id)
+        # действия пост запросов на окне поста
+        post_actions(post_repo, bookmark_repo, like_repo, user_id)
 
     # рендер постов
     posts = post_repo.get_posts()
@@ -47,8 +47,12 @@ def home_page():
     # статус кнопок
     bookmark_status = {}
     likes_status = {}
+    sub_status = {}
     for post in posts:
         bookmark_status[post['id']] = bookmark_repo.check_bookmark(user_id, post['id'])
         likes_status[post['id']] = like_repo.check_like(post['id'], user_id)
+        sub_status[post['id']] = post_repo.check_sub(user_id, post['author_id'])
+    print(sub_status)
 
-    return render_template('blog/home.html', posts=posts, bookmark_status=bookmark_status, likes_status=likes_status)
+    return render_template('blog/home.html', posts=posts, bookmark_status=bookmark_status, likes_status=likes_status,
+                           sub_status=sub_status)

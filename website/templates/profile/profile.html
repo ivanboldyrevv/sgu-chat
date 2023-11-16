@@ -52,8 +52,14 @@
                             <button type="submit" class="btn btn-light" name="call-request" value="{{ profile.id }}"><img src="{{ url_for('static', filename='img/friends.png') }}"> Добавить в друзья</button>
                         </div>
                         {% endif %}
+                        <div class="col my-1">
+                            {% if check_sub %}
+                            <button type="submit" class="btn btn-sm btn-light" name="unsubscribe"><img src="{{ url_for('static', filename='img/bell.png') }}">Отписаться</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-sm btn-light" name="subscribe"><img src="{{ url_for('static', filename='img/bell.png') }}">Подписаться</button>
+                            {% endif %}
+                        </div>
                     </div>
-
                     {% endif %}
 
                 </div>

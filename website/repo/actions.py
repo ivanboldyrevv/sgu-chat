@@ -3,13 +3,27 @@ from flask import request, redirect, url_for
 """Действия при пост запросах на главной странице и странице поста"""
 
 
-def post_actions(bookmark_repo, like_repo, user_id):
+def post_actions(post_repo, bookmark_repo, like_repo, user_id):
     if 'open-comments' in request.form:
         open_comments()
     if 'like' in request.form:
         like(like_repo, user_id)
     if 'bookmark' in request.form:
         bookmark(bookmark_repo, user_id)
+    if 'subscribe' in request.form:
+        subscribe(post_repo, user_id)
+    if 'unsubscribe' in request.form:
+        unsubscribe(post_repo, user_id)
+
+
+def subscribe(post_repo, user_id):
+    subscribe_id = request.form['subscribe']
+    post_repo.subscribe(user_id, subscribe_id)
+
+
+def unsubscribe(post_repo, user_id):
+    subscribe_id = request.form['unsubscribe']
+    post_repo.unsubscribe(user_id, subscribe_id)
 
 
 def open_comments():

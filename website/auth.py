@@ -33,6 +33,8 @@ def register():
             try:
                 db.execute("INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
                            (username, email, generate_password_hash(password)))
+                db.execute('INSERT INTO role (user_role, user_id) '
+                           'VALUES (?, (SELECT id FROM user ORDER BY create_date DESC))', ('user',))
                 db.commit()
             except db.IntegrityError:
                 error = f'Пользователь с именем {username} уже существует'

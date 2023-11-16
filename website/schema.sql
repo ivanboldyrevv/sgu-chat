@@ -8,15 +8,18 @@ DROP TABLE bookmarks;
 DROP TABLE friendlist;
 DROP TABLE groups;
 DROP TABLE user_group;
-*/
 DROP TABLE message_recipient;
 DROP TABLE messages;
+DROP TABLE role;
+DROP TABLE subscribers;
+*/
 
 CREATE TABLE IF NOT EXISTS user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(32) UNIQUE NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     avatar TEXT NULL,
     country TEXT NULL,
     birthday TEXT NULL,
@@ -118,4 +121,20 @@ CREATE TABLE IF NOT EXISTS message_recipient(
     FOREIGN KEY(recipient_id) REFERENCES user(id),
     FOREIGN KEY(recipient_group_id) REFERENCES groups(id),
     FOREIGN KEY(message_id) REFERENCES messages(id)
+);
+
+CREATE TABLE IF NOT EXISTS role(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_role TEXT NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+CREATE TABLE IF NOT EXISTS subscribers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    subscription INTEGER NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES user(id),
+    FOREIGN KEY(subscription) REFERENCES user(id)
 );
