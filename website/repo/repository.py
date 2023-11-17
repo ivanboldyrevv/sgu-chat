@@ -36,10 +36,11 @@ class PostRepository:
 
     def get_posts(self):
         return self.db.execute(
-            'SELECT post.*, user.*, user.id as user_id, GROUP_CONCAT(files_post.filename) AS filenames '
+            'SELECT post.*, user.*, user.id as user_id, GROUP_CONCAT(files_post.filename) AS filenames, stats.* '
             'FROM post '
             'JOIN user ON post.author_id = user.id '
             'JOIN files_post ON post.id = files_post.post_id '
+            'JOIN posts_statistics AS stats ON post.id = stats.id '
             'GROUP BY post.id '
             'ORDER BY post.created DESC').fetchall()
 
@@ -56,10 +57,11 @@ class PostRepository:
         self.db.commit()
 
     def get_post(self, post_id):
-        return self.db.execute('SELECT post.*, user.*, GROUP_CONCAT(files_post.filename) AS filenames '
+        return self.db.execute('SELECT post.*, user.*, GROUP_CONCAT(files_post.filename) AS filenames, stats.* '
                                'FROM post '
                                'JOIN user ON post.author_id = user.id '
                                'JOIN files_post ON post.id = files_post.post_id '
+                               'JOIN posts_statistics AS stats ON post.id = stats.id '
                                'WHERE post.id = ?', (post_id,)).fetchone()
 
     def subscribe(self, user_id, subscription):
@@ -148,6 +150,12 @@ class Statistics:
         self.db.execute('UPDATE posts_statistics SET views = ? WHERE post_id = ?', (views, post_id))
         self.db.commit()
 
+    def update_likes(self, post_id):
+        self.db.execute('UPDATE posts_statistics '
+                        'SET likes = (SELECT COUNT(*) FROM likes WHERE post_id = ?) '
+                        'WHERE post_id = ?', (post_id, post_id))
+        self.db.commit()
+
     def get_view(self, post_id):
         return self.db.execute('SELECT views FROM posts_statistics WHERE post_id = ?', (post_id,)).fetchone()[0]
 
@@ -231,3 +239,18 @@ class Chat:
                                'JOIN messages ON message_recipient.message_id = messages.id '
                                'JOIN user ON message_recipient.recipient_id = user.id '
                                'WHERE recipient_group_id = ?', (group_id,)).fetchall()
+
+    def return_to_chat_from_friendlist(self, first, second):
+        return self.db.execute('SELECT groups.id '
+                               'FROM groups '
+                               'JOIN user_group ON groups.id = user_group.group_id '
+                               'WHERE user_id IN (?, ?) '
+                               'GROUP BY groups.id '
+                               'HAVING COUNT(DISTINCT user_id) = 2', (first, second)).fetchone()[0]
+
+    def show_last_message(self, group_id):
+        return self.db.execute('SELECT data, username FROM message_recipient '
+                               'JOIN messages ON message_recipient.message_id = messages.id '
+                               'JOIN user ON messages.creator_id = user.id '
+                               'WHERE recipient_group_id = ? '
+                               'ORDER BY messages.create_date DESC', (group_id,)).fetchone()

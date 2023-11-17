@@ -19,7 +19,7 @@
                     {{group.username}}
                     <div class="row">
                         <div class="col">
-                            {{last_message}}
+                            {{last_message.get(group.group_id)[1]}}: {{last_message.get(group.group_id)[0]}}
                         </div>
                     </div>
                     </a>

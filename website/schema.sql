@@ -1,4 +1,4 @@
-/*
+/**/
 DROP TABLE user;
 DROP TABLE post;
 DROP TABLE files_post;
@@ -12,7 +12,7 @@ DROP TABLE message_recipient;
 DROP TABLE messages;
 DROP TABLE role;
 DROP TABLE subscribers;
-*/
+
 
 CREATE TABLE IF NOT EXISTS user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,

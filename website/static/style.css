@@ -71,3 +71,11 @@ body {
 .edit-margin{
   margin-left: 100px;
 }
+
+.down-post-style{
+  color: #D3D3D3;
+}
+
+.repost-margin{
+  margin-left: -150px;
+}

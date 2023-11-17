@@ -16,10 +16,14 @@
                 <p class="date-margin">- {{post.created}}</p>
             </div>
             <div class="col text-end">
+                {% if g.user.id != post.author_id %}
                 {% if sub_status.get(post.id) %}
                     <button type="submit" class="btn btn-sm btn-light" name="unsubscribe" value="{{ post.author_id }}"><img src="{{ url_for('static', filename='img/bell.png') }}">Отписаться</button>
                 {% else %}
                     <button type="submit" class="btn btn-sm btn-light" name="subscribe" value="{{ post.author_id }}"><img src="{{ url_for('static', filename='img/bell.png') }}">Подписаться</button>
+                {% endif %}
+                {% else %}
+                <p>Ваш пост</p>
                 {% endif %}
             </div>
         </div>
@@ -57,7 +61,10 @@
         </div>
         <div class="row">
             <div class="col text-start my-1">
-                Просмотры: 10000 просмотров
+                <p class="down-post-style">{{post.views}} просмотров</p>
+            </div>
+            <div class="col text-start my-1">
+                <p class="down-post-style repost-margin">{{post.views}} репостов</p>
             </div>
         </div>
         <div class="row">

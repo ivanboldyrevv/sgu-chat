@@ -13,7 +13,8 @@ def friendlist():
         if 'accept-friend' in request.form:
             friends_data.update_status('friendship', request.form['accept-friend'], arg)
         if 'to-chat' in request.form:
-            return redirect(url_for('chat.chats'))
+            ids = repository.create_chat_repository().return_to_chat_from_friendlist(arg, request.form['to-chat'])
+            return redirect(url_for('chat.chats', id=ids))
 
     friend_request = friends_data.check_request('get', arg)
 

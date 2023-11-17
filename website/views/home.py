@@ -17,6 +17,7 @@ def home_page():
     post_repo = repository.create_post_repository()
     bookmark_repo = repository.create_bookmark_repository()
     like_repo = repository.create_likes_repository()
+    stats_repo = repository.create_statistics_repository()
 
     # id пользователя в сессии
     user_id = session.get('user_id')
@@ -39,7 +40,7 @@ def home_page():
                 file.save(os.path.join(UPLOAD_PATH, filename))
                 post_repo.files_to_db(filename, filetype)
         # действия пост запросов на окне поста
-        post_actions(post_repo, bookmark_repo, like_repo, user_id)
+        post_actions(stats_repo, post_repo, bookmark_repo, like_repo, user_id)
 
     # рендер постов
     posts = post_repo.get_posts()

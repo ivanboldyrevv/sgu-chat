@@ -3,11 +3,11 @@ from flask import request, redirect, url_for
 """Действия при пост запросах на главной странице и странице поста"""
 
 
-def post_actions(post_repo, bookmark_repo, like_repo, user_id):
+def post_actions(stats_repo, post_repo, bookmark_repo, like_repo, user_id):
     if 'open-comments' in request.form:
         open_comments()
     if 'like' in request.form:
-        like(like_repo, user_id)
+        like(stats_repo, like_repo, user_id)
     if 'bookmark' in request.form:
         bookmark(bookmark_repo, user_id)
     if 'subscribe' in request.form:
@@ -30,12 +30,14 @@ def open_comments():
     return redirect(url_for('post.post_page', post_id=request.form['open-comments']))
 
 
-def like(like_repo, user_id):
+def like(stats_repo, like_repo, user_id):
     post_id = request.form['like']
     if like_repo.check_like(post_id, user_id):
         like_repo.remove_like(post_id, user_id)
+        stats_repo.update_likes(post_id)
     else:
         like_repo.add_like(post_id, user_id)
+        stats_repo.update_likes(post_id)
 
 
 def bookmark(bookmark_repo, user_id):

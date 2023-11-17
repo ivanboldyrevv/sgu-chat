@@ -20,6 +20,12 @@ def chats():
     groups = chat_repo.get_groups(user_id)
     # сообщения в диалоге
     messages = repository.create_chat_repository().get_messages(request.args.get('id'))
+    # ласт сообщения
+    # last_message = repository.create_chat_repository().show_last_message()
+    last_message = {}
+    for group in groups:
+        last_message[group['group_id']] = repository.create_chat_repository().show_last_message(group['group_id'])
+    print(last_message)
 
     if request.method == 'POST':
         chat_actions(user_id, arg, chat_repo)
@@ -28,4 +34,4 @@ def chats():
     if request.args.get('id'):
         return render_template('chat/dialog.html', messages=messages)
 
-    return render_template('chat/chat.html', friends=friends, groups=groups)
+    return render_template('chat/chat.html', friends=friends, groups=groups, last_message=last_message)
