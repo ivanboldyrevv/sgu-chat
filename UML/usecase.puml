@@ -1,7 +1,6 @@
 @startuml
-!theme cerulean-outline
-title SGU-CHAT
 skinparam actorStyle awesome
+title SGU-CHAT
 left to right direction
 :Пользователь: as user
 :Гость: as guest

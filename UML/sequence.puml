@@ -1,0 +1,49 @@
+@startuml
+skinparam actorStyle awesome
+skinparam participantStyle awesome
+actor       Пользователь       as user
+participant Интерфейс as ui
+participant Сервер as server
+database    Database    as db
+participant Платежная_система as pay_sys
+
+activate ui
+user -> ui: Взаимодействие с интерфейсом
+ui -> server: POST/Проверка подписки
+activate server
+server -> db: Проверка подписки
+activate db
+db --> server: Подписан ли пользователь?
+deactivate db
+
+alt пользователь подписан
+    server -> ui: GET/Cкрыть кнопку
+else пользователь не подписан
+    server -> ui: GET/Показать через интерфейс кнопку оформить подписку
+end
+
+deactivate server
+user -> ui: Взаимодействие с интерфейсом
+activate server
+ui -> server: POST/создать заказ
+server -> db: Добавление пользователя в таблицу подписок
+
+server -> server: Счет на оплату
+server -> ui: GET/Счет на оплату
+deactivate server
+user -> ui: Ввод данных банковской карты
+activate server
+ui -> server: POST/Данные банковской карты
+server -> pay_sys: API/Данные банковской карты
+activate pay_sys
+pay_sys -> pay_sys: Проведение платежа
+activate pay_sys
+pay_sys -> server: Статус оплаты
+deactivate pay_sys
+deactivate pay_sys
+server -> ui: GET/Статус оплаты
+deactivate server
+ui -> user: Статус оплаты
+deactivate ui
+
+@enduml
