@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, session, request, redirect, url_for
+from flask import Blueprint, render_template, session, request
+
 from website.repo.repository import RepositoryFactory
-from website.repo.actions import post_actions
+
 
 bookmark = Blueprint('bookmarks', __name__)
 
@@ -9,14 +10,16 @@ bookmark = Blueprint('bookmarks', __name__)
 def bookmarks():
     # репозитории бд
     repository = RepositoryFactory()
+
     bookmark_repo = repository.create_bookmark_repository()
     like_repo = repository.create_likes_repository()
+    stats_repo = repository.create_statistics_repository()
+    post_repo = repository.create_post_repository()
 
-    # юзер id из сессии
     user_id = session.get('user_id')
+
     if request.method == 'POST':
-        # действия с постом
-        post_actions(bookmark_repo, like_repo, user_id)
+        pass
 
     # данные для закладок
     posts = bookmark_repo.get_bookmarks(user_id)

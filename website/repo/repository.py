@@ -1,6 +1,8 @@
-from website.db import get_db
 import os
+from website.db import get_db
+
 from flask import request
+
 from werkzeug.utils import secure_filename
 
 
@@ -207,7 +209,7 @@ class Chat:
     def __init__(self, db):
         self.db = db
 
-    def add_group(self, friend_1, friend_2):
+    def create_group(self, friend_1, friend_2):
         self.db.execute('INSERT INTO groups (name) VALUES (?)', ('friend_1, friend_2',))
         group_id = self.db.execute('SELECT id FROM groups ORDER BY create_date DESC').fetchone()[0]
         self.db.execute('INSERT INTO user_group (user_id, group_id) VALUES (?, ?), (?, ?)',
