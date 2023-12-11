@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session
-from website.repo.repository import RepositoryFactory
+from website.repo.repository_factory import RepositoryFactory
 
 post = Blueprint('post', __name__, url_prefix='/post')
 

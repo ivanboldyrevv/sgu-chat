@@ -4,7 +4,7 @@ from flask import redirect, url_for, request
 
 from werkzeug.utils import secure_filename
 
-from website.repo.repository import RepositoryFactory
+from website.repo.repository_factory import RepositoryFactory
 
 
 class PostActivity:

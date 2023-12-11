@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, request
 
-from website.repo.repository import RepositoryFactory
-
+from website.repo.repository_factory import RepositoryFactory
+from website.repo.actions_in_post import PostActivity
 
 bookmark = Blueprint('bookmarks', __name__)
 
@@ -10,26 +10,19 @@ bookmark = Blueprint('bookmarks', __name__)
 def bookmarks():
     # репозитории бд
     repository = RepositoryFactory()
-
-    bookmark_repo = repository.create_bookmark_repository()
-    like_repo = repository.create_likes_repository()
-    stats_repo = repository.create_statistics_repository()
-    post_repo = repository.create_post_repository()
+    bookmark_repository = repository.create_bookmark_repository()
 
     user_id = session.get('user_id')
 
+    bookmark_activity = PostActivity(user_id)
+
     if request.method == 'POST':
-        pass
+        actions = bookmark_activity.action()
+        if actions:
+            return actions
 
     # данные для закладок
-    posts = bookmark_repo.get_bookmarks(user_id)
+    posts = bookmark_repository.get_bookmarks(user_id)
+    button_status = bookmark_activity.get_post_button_status(posts)
 
-    # статус кнопок
-    bookmark_status = {}
-    likes_status = {}
-    for post in posts:
-        bookmark_status[post['id']] = bookmark_repo.check_bookmark(user_id, post['id'])
-        likes_status[post['id']] = like_repo.check_like(post['id'], user_id)
-
-    return render_template('blog/bookmarks.html', posts=posts, bookmark_status=bookmark_status,
-                           likes_status=likes_status)
+    return render_template('blog/bookmarks.html', posts=posts, button_status=button_status)

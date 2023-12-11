@@ -11,19 +11,27 @@
         {% for group in groups %}
         <div class="row">
             <div class="col-2 text-start">
-                    <img class="prf-circle" src="{{ url_for('static', filename='users_files/' + group.avatar) }}">
+                {% if group.group_avatar %}
+                    <img src="{{ url_for('static', filename='chat_files/' + group.group_avatar) }}" class="prf-circle">
+                {% else %}
+                    <img src="{{ url_for('static', filename='img/user.png') }}" class="prf-circle">
+                {% endif %}
             </div>
             <div class="col text-start">
-                <div class="col">
-                    <a class="aa" href="{{ url_for('chat.chats', id=group.group_id) }}">
-                    {{group.username}}
-                    <div class="row">
-                        <div class="col">
-                            {{last_message.get(group.group_id)[1]}}: {{last_message.get(group.group_id)[0]}}
+                <a class="aa" href="{{ url_for('chat.chats', id=group.id) }}">
+                    <div class="col">
+                        {{group.name}}
+                        <div class="row">
+                            <div class="col">
+                                {% if last_message.get(group.id)[1] == 'system' %}
+                                {{last_message.get(group.id)[0]}}
+                                {% else %}
+                                {{last_message.get(group.id)[1]}}: {{last_message.get(group.id)[0]}}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
         <hr/>
@@ -36,7 +44,6 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -50,7 +57,7 @@
                     <div class="col text-start">
                         <div class="col">
                             {{friend.username}}
-                            <button type="submit" class="btn btn-light" name="to-chat" value="{{friend.user_id}}">Написать</button>
+                            <button type="submit" class="btn btn-light" name="to-chat" value="{{friend.user_id}}">Создать чат</button>
                         </div>
                     </div>
                 </div>
@@ -58,10 +65,6 @@
                 {% endfor %}
             </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

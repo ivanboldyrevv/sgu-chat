@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for
-from website.repo.repository import RepositoryFactory
+from website.repo.repository_factory import RepositoryFactory
 
 profile = Blueprint('profile', __name__, url_prefix='/u')
 
@@ -28,6 +28,7 @@ def profile_page(username):
     posts = user_repo.user_posts(user_id)
     check_request = user_repo.check_request('recall', user_id, arg)
     check_sub = repository.create_post_repository().check_sub(user_id, arg)
+    countries = user_repo.get_countries()
 
     return render_template('profile/profile.html', profile=user_profile, posts=posts, check_request=check_request,
-                           check_sub=check_sub)
+                           check_sub=check_sub, countries=countries)

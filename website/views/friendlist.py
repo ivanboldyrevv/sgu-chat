@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from website.repo.repository import RepositoryFactory
+from website.repo.repository_factory import RepositoryFactory
 
 friends = Blueprint('friends', __name__)
 

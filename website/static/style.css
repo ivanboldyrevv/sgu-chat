@@ -79,3 +79,15 @@ body {
 .repost-margin{
   margin-left: -150px;
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.sub-card-margin{
+  margin-left: 40px;
+}
+
+.sub-text-margin{
+  margin-top: -20px;
+}

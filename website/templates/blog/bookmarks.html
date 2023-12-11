@@ -6,7 +6,7 @@
         <!--- user_img, username, date -->
         <div class="row">
             <div class="col-1 text-start">
-                <img width="28" height="28" class="circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiZiUElp6b1wqWnRUg7U67yOMTfd8urhziuLuAk-&s" alt="ninja-turtle"/>
+                <img width="28" height="28" class="circle" src="{{ url_for('static', filename='users_files/' + post.avatar) }}"/>
             </div>
             <div class="col-auto text-start">
                 <p class="fw-bold usr-post-margin">{{post.username}}</p>
@@ -49,14 +49,17 @@
         </div>
         <div class="row">
             <div class="col text-start my-1">
-                Просмотры: 10000 просмотров
+                <p class="down-post-style">{{post.views}} просмотров</p>
+            </div>
+            <div class="col text-start my-1">
+                <p class="down-post-style repost-margin">{{post.views}} репостов</p>
             </div>
         </div>
         <form method="POST">
         <div class="row">
             <div class="col-1 text-start">
                 <button type="submit" style="background: none; border: none; padding: 0;" name="like" value="{{post.id}}">
-                    {% if likes_status.get(post.id) %}
+                    {% if button_status['like_button_status'].get(post.id) %}
                     <img width="25" height="25" src="{{url_for('static', filename='img/fill-heart.png')}}" alt="hearts"/>
                     {% else %}
                     <img width="25" height="25" src="{{url_for('static', filename='img/heart.png')}}" alt="hearts"/>
@@ -70,7 +73,7 @@
             </div>
             <div class="col-1 text-start">
                 <button style="background: none; border: none; padding: 0;" name="bookmark" value="{{post.id}}">
-                {% if bookmark_status.get(post.id) %}
+                {% if button_status['bookmark_button_status'].get(post.id) %}
                     <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-remove.png')}}" alt="bookmark">
                 {% else %}
                     <img width="25" height="25" src="{{url_for('static', filename='img/bookmark-add.png')}}" alt="bookmark">

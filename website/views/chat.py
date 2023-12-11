@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, request
-from website.repo.repository import RepositoryFactory
+from flask import Blueprint, render_template, session, request, redirect, url_for
+from website.repo.repository_factory import RepositoryFactory
 from website.repo.actions_in_chat import ChatActivity
 
 chat = Blueprint('chat', __name__)
@@ -19,19 +19,20 @@ def chats():
     # Данные для главной страницы чата
     friends = user_repo.get_friends(user_id)
     groups = chat_repo.get_groups(user_id)
-
     last_message = activity.last_messages(groups)
 
     # Данные для диалога
-    messages = activity.messages
+    messages = chat_repo.get_messages(room_id)
+    check_users_in_chat = activity.users_in_chat(friends)
 
     if request.method == 'POST':
-        activity.actions()
-        if activity:
-            return activity
+        actions = ChatActivity(user_id, room_id).actions()
+        if actions:
+            return actions
 
     # переадрессация на страницу диалога
     if room_id:
-        return render_template('chat/dialog.html', messages=messages)
+        return render_template('chat/dialog.html', friends=friends, messages=messages,
+                               check_users_in_chat=check_users_in_chat)
 
     return render_template('chat/chat.html', friends=friends, groups=groups, last_message=last_message)

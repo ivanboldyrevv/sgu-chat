@@ -12,12 +12,12 @@
                 {% endif %}
                 <div class="card my-1" style="height:2rem; width:8rem;">
                     <div class="card-body">
-                        <p class="s-margin"><img src="{{ url_for('static', filename='img/man.png') }}"> Мужчина</p>
+                        <p class="s-margin"><img src="{{ url_for('static', filename='img/man.png') }}"> {{profile.gender}}</p>
                     </div>
                 </div>
                 <div class="card my-1" style="height:2rem; width:12rem;">
                     <div class="card-body">
-                        <p class="s-margin"><img src="{{ url_for('static', filename='img/cake.png') }}"> 03.04.99 (24 года)</p>
+                        <p class="s-margin"><img src="{{ url_for('static', filename='img/cake.png') }}"> {{profile.birthday}}</p>
                     </div>
                 </div>
                 <div class="card my-1" style="height:2rem; width:12rem;">
@@ -35,7 +35,7 @@
             <div class="col text-start">
                 <div class="row">
                     <div class="col-auto">
-                        <h3>{{ profile.username }}</h3>
+                        <h3>{{ profile.username }} <img src="https://www.flagistrany.ru/data/flags/emoji/openmoji/256x256/au.png" width="20"> </h3>
                     </div>
                     {% if g.user.username == profile.username %}
                     <div class="col text-end">
@@ -63,9 +63,9 @@
                     {% endif %}
 
                 </div>
-                <h6>Изучаю: Программирование &#U+1F1FA;</h6>
+                <h6>Изучаю: {{profile.study}}</h6>
                 <h6>О себе:</h6>
-                <p>ЛЯГУШЕЧКА ПЕПА</p>
+                <p>{{profile.bio}}</p>
                 <div style="display: flex; align-items: center;">
                   <hr style="flex: 1;">
                   <p style="margin: 0; padding: 0 10px;" class="fw-bold">ПОСТЫ</p>
@@ -101,13 +101,31 @@
           <label for="user-avatar" class="form-label">Измените картинку профиля</label>
           <input class="form-control" type="file" id="user-avatar" name="user-avatar">
         </div>
-            <label class="form-label">Страна</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">Россия</option>
-              <option value="2">Россия</option>
-              <option value="3">Россия</option>
+            <label class="form-label">Ваш пол</label>
+            <select class="form-select" name="gender">
+              <option selected>Выберите пол</option>
+              <option value="Male">Мужчина</option>
+              <option value="Female">Женщина</option>
             </select>
+            <label class="form-label">Страна</label>
+            <select class="form-select" name="country">
+              <option selected>Выберите страну</option>
+              {% for country in countries %}
+              <option value="{{country.id}}">{{country.name}}</option>
+              {% endfor %}
+            </select>
+            <div class="mb-3" align="center">
+              <label for="bio" class="form-label">Расскажите о себе</label>
+              <textarea class="form-control" id="bio" rows="2" name="bio"></textarea>
+            </div>
+            <div class="mb-3" align="center">
+              <label for="study" class="form-label">Какую дисциплину изучаете?</label>
+              <textarea class="form-control" id="study" rows="1" name="study"></textarea>
+            </div>
+            <div class="mb-3" align="center">
+              <label for="birthday" class="form-label">Введите дату ваше ДР</label>
+              <textarea class="form-control" id="birthday" rows="1" name="birthday"></textarea>
+            </div>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>

@@ -6,7 +6,7 @@
         <!--- user_img, username, date -->
         <div class="row">
             <div class="col-1 text-start">
-                <img width="28" height="28" class="circle" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQiZiUElp6b1wqWnRUg7U67yOMTfd8urhziuLuAk-&s" alt="ninja-turtle"/>
+                <img width="28" height="28" class="circle" src="{{ url_for('static', filename='users_files/' + post.avatar) }}" alt="ninja-turtle"/>
             </div>
             <div class="col-auto text-start">
                 <p class="fw-bold usr-post-margin">{{post.username}}</p>

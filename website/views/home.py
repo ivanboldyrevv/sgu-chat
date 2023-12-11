@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 import os
 
-from website.repo.repository import RepositoryFactory
+from website.repo.repository_factory import RepositoryFactory
 
 from website.repo.actions_in_post import PostActivity
 

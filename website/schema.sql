@@ -1,4 +1,4 @@
-/**/
+
 DROP TABLE user;
 DROP TABLE post;
 DROP TABLE files_post;
@@ -27,6 +27,8 @@ CREATE TABLE IF NOT EXISTS user(
     bio TEXT NULL,
     study TEXT NULL
 );
+
+INSERT INTO user (id, username, email, password) VALUES (0, 'system', 'system@system.sys', 'asd');
 
 CREATE TABLE IF NOT EXISTS post(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -93,6 +95,7 @@ CREATE TABLE IF NOT EXISTS friendlist(
 CREATE TABLE IF NOT EXISTS groups(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    group_avatar TEXT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -137,4 +140,10 @@ CREATE TABLE IF NOT EXISTS subscribers(
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(subscription) REFERENCES user(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS countries(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
 );

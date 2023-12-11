@@ -1,11 +1,15 @@
 {% extends "base.html" %}{% block title %}диалог{% endblock %}
 {% block content %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
 <div class="card my-3" style="width:36rem;">
     <div class="card-body">
         {% for message in messages %}
         <div class="row">
-            {% if message.recipient_id != g.user.id %}
+            {% if message.recipient_id == 0 %}
+            <div class="col text-center">
+                <p class="down-post-style">{{message.data}}</p>
+            </div>
+            {% elif message.recipient_id != g.user.id %}
             <div class="col text-start">
                 <div class="row my-1">
                     <div class="col-1">
@@ -40,10 +44,73 @@
         <div class="mb-3">
           <textarea class="form-control" name="message-data" rows="2"></textarea>
         </div>
-        <div class="col text-end">
-            <button type="submit" class="btn btn-light" name="send-message">Отправить</button>
+        <div class="row">
+            <div class="col-1 text-start">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-user" style="background: none; border: none; padding: 0;">
+                    <img width="25" height="25" src="{{url_for('static', filename='img/users.png')}}"/>
+                </button>
+            </div>
+            <div class="col text-start">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settings" style="background: none; border: none; padding: 0;">
+                    <img width="25" height="25" src="{{url_for('static', filename='img/gear.png')}}"/>
+                </button>
+            </div>
+            <div class="col text-end">
+                <button type="submit" class="btn btn-light" name="send-message">Отправить</button>
+            </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="add-new-user" tabindex="-1" aria-labelledby="add" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          {% for friend in friends %}
+          <div class="row">
+              <div class="col-2 text-start">
+                  <img class="prf-circle" src="{{ url_for('static', filename='users_files/' + friend.avatar)}}">
+              </div>
+              <div class="col text-start">
+                  <div class="col">
+                      {{friend.username}}
+                      <button type="submit" class="btn btn-light" name="add-to-chat" value="{{friend.user_id}}" {% if check_users_in_chat.get(friend.user_id) %}disabled{% endif %}>Добавить в чат</button>
+                      <button type="submit" class="btn btn-light" name="delete-from-chat" value="{{friend.user_id}}" {% if check_users_in_chat.get(friend.user_id)%}{% else %}disabled{% endif %}>Удалить из чата</button>
+                  </div>
+              </div>
+          </div>
+          <hr/>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- chat-settings -->
+<div class="modal fade" id="settings" tabindex="-1" aria-labelledby="set" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col text-start">
+            <div class="mb-3">
+                <label for="chat-picture" class="form-label">Изменить картинку чата</label>
+                <input class="form-control" type="file" id="chat-picture" name="chat-pic">
+            </div>
+        </div>
+        <div class="col text-start">
+            <label for="chat-name">Измените название чата</label>
+            <input id="chat-name" class="form-control" type="text" placeholder="Введите название" name="chat-name">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-light" name="chat-settings">Изменить</button>
+      </div>
+    </div>
+  </div>
 </div>
 </form>
 {% endblock %}
