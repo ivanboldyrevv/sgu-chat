@@ -1,6 +1,5 @@
 @startuml
 skinparam actorStyle awesome
-skinparam participantStyle awesome
 actor       Пользователь       as user
 participant Интерфейс as ui
 participant Сервер as server
